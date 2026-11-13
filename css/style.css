@@ -193,6 +193,41 @@ button.active { background: #16324a; color: #fff; border-color: #16324a; }
 .settings select { width: 100%; padding: 5px; margin-top: 4px; }
 #btn-settings-reset { margin-top: 14px; }
 
+/* How-to guide panel: same right-side panel pattern as settings, wider
+ * because the guide carries long text. On desktop it overlays the
+ * results panel; on a phone it becomes a full-screen overlay (see the
+ * 760px block below). */
+.guide-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 520px;
+  max-width: calc(100% - 20px);
+  z-index: 20;
+  overflow-y: auto;
+  background: #fff;
+  border-left: 1px solid #d5dde3;
+  box-shadow: -4px 0 18px rgba(0, 0, 0, 0.18);
+  padding: 12px 18px 24px;
+}
+.guide-panel h2 { font-size: 16px; margin: 4px 0 10px; }
+.guide-panel h3 { font-size: 15px; margin: 22px 0 6px; }
+.guide-panel h4 { font-size: 13px; margin: 14px 0 4px; color: #4a5a68; }
+.guide-panel p, .guide-panel li { font-size: 13px; line-height: 1.55; }
+.guide-panel dl { margin: 6px 0; font-size: 13px; }
+.guide-panel dt { font-weight: 600; margin-top: 8px; }
+.guide-panel dd { margin: 2px 0 0; }
+.guide-panel ul, .guide-panel ol { padding-left: 20px; }
+.guide-panel .example {
+  background: #f4f6f8;
+  border-left: 3px solid #16324a;
+  padding: 8px 10px;
+  margin: 10px 0;
+}
+.guide-nav { border-bottom: 1px solid #d5dde3; padding-bottom: 10px; margin-bottom: 4px; }
+.guide-nav a { display: block; padding: 4px 0; font-size: 13px; font-weight: 600; color: #16324a; }
+
 @media (max-width: 1100px) {
   .layout { grid-template-columns: 280px 1fr; }
   .panel-right { grid-column: 1 / -1; height: auto; }
@@ -287,6 +322,13 @@ button.active { background: #16324a; color: #fff; border-color: #16324a; }
 
   /* Settings become a full-screen overlay. */
   .settings {
+    width: 100%; max-width: none;
+    border-left: none;
+    z-index: 30;
+  }
+
+  /* Guide panel becomes a full-screen overlay, same as settings. */
+  .guide-panel {
     width: 100%; max-width: none;
     border-left: none;
     z-index: 30;

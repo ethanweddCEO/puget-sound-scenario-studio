@@ -19,6 +19,7 @@
     <input id="file-load" type="file" accept=".json,application/json" hidden>
     <button id="btn-link" type="button" title="Copy a link that opens this exact scenario">Copy share link</button>
     <button id="btn-settings" type="button" title="Display and behavior settings">Settings</button>
+    <button id="btn-guide" type="button" title="How to use this app">Guide</button>
   </div>
 </header>
 
@@ -233,8 +234,19 @@
   <button id="btn-settings-reset" type="button">Reset all settings to defaults</button>
 </aside>
 
+<!-- How-to guide: a Guide button in the topbar opens this panel. The
+     section content is built by js/guide.js, which also owns the open,
+     close, Escape, and focus behavior. -->
+<aside class="guide-panel" id="guide-panel" hidden role="dialog" aria-modal="true" aria-labelledby="guide-title">
+  <h2 id="guide-title" tabindex="-1">How to use the Scenario Studio</h2>
+  <button class="drawer-close" id="guide-close" type="button" aria-label="Close guide">Close</button>
+  <nav class="guide-nav" id="guide-nav" aria-label="Guide sections"></nav>
+  <div id="guide-body"></div>
+</aside>
+
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="js/model.js"></script>
+<script src="js/guide.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
