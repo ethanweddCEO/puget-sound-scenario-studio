@@ -60,7 +60,7 @@ runs green; see `scripts/acceptance_test.js`.
 
 | Path | What it is | Why it is separate |
 |---|---|---|
-| `index.html` | Page shell: header, three regions, drawer, settings panel | Structure only; no logic, so the layout is reviewable on its own |
+| `index.html` | Page shell: header, three regions, drawer, settings panel, mobile section nav | Structure only; no logic, so the layout is reviewable on its own |
 | `css/style.css` | All styling, no framework | A static page should be readable without a build step |
 | `js/model.js` | Pure capacity model | No DOM, no map, no fetch, so Node can run the same code the browser runs and the acceptance test cannot drift from the app |
 | `js/app.js` | State, settings, map, controls, results, drawer | Everything that touches the DOM or MapLibre lives here and nowhere else |
@@ -95,6 +95,30 @@ The map never computes capacity. After each model run, `app.js` stamps
 features and hands them to the MapLibre source. Color modes are paint
 expressions over those properties, so switching modes never re-runs the
 model.
+
+### Layout: desktop and mobile
+
+One stylesheet, no framework, three breakpoints:
+
+- **Above 1100px (desktop):** the three-column grid: scenario controls
+  left, map center, results right. Panels scroll internally; the page
+  itself does not scroll.
+- **760px to 1100px (tablet):** two columns (controls + map), with the
+  results panel spanning the full width below.
+- **760px and below (phone):** one scrolling column in this order: map
+  (about 55% of the viewport tall, capped at 420px), results, scenario
+  controls. A fixed section nav at the bottom (Map / Results / Scenario)
+  jumps to each part in one tap; it is plain anchor links, so it needs no
+  JavaScript and works with keyboard focus. The detail drawer becomes a
+  bottom sheet (at most 72% of the screen tall) and the settings panel
+  becomes a full-screen overlay. The district table scrolls sideways
+  inside its own box, so the page never gains a horizontal scrollbar.
+  Every tappable control is at least 44px tall on a phone, and the
+  sliders get a taller track and a 28px thumb.
+
+The layout is CSS only: `index.html` keeps the same ids and classes
+`app.js` expects, and `model.js` and the data files are untouched by any
+layout change.
 
 ### Scenario, comparison, and settings state
 
@@ -196,10 +220,12 @@ asking first.
 
 ## Branches
 
-Work lands on a branch (`phase-1-mvp` for this build). Nothing merges to
-`main` without Ethan's yes. GitHub Pages is **not** enabled: publishing
-later requires a data-license check on the derived layers, which has not
-been done.
+Work lands on a branch (`phase-1-mvp` for the MVP, `mobile-ui-pass` for
+the mobile layout pass). Nothing merges to `main` without Ethan's yes.
+GitHub Pages serves `phase-1-mvp` at
+https://ethanweddCEO.github.io/puget-sound-scenario-studio/ (the repo is
+public; the data-license check passed 2026-11-13, no blocker). The live
+site does not change until a branch is merged into `phase-1-mvp`.
 
 ## Security
 
