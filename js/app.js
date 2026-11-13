@@ -87,16 +87,15 @@
     "BR-R": "#bcbd22", "BR-ORT": "#17a398",
   };
 
-  /* Basemaps need no API key. Carto and OpenStreetMap raster tiles are
-   * keyless; if a future basemap ever needs a key, it must come from
-   * environment at runtime, never from a hardcoded value in this repo. */
-  var BASEMAPS = {
-    light: { tiles: ["https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"],
-             attribution: "© OpenStreetMap contributors © CARTO" },
-    dark: { tiles: ["https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"],
-            attribution: "© OpenStreetMap contributors © CARTO" },
-    osm: { tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-           attribution: "© OpenStreetMap contributors" },
+  /* Basemap: OpenStreetMap raster tiles only. CARTO's basemaps were
+   * removed 2026-11-13: they now answer every tile with an
+   * "API KEY REQUIRED" placeholder, and this app has no key input, so
+   * a CARTO option would be a control that cannot work. If a future
+   * basemap ever needs a key, it must come from environment at runtime,
+   * never from a hardcoded value in this repo. */
+  var BASEMAP = {
+    tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+    attribution: "© OpenStreetMap contributors",
   };
 
   var GROUP_LABELS = {
@@ -114,7 +113,6 @@
     defaultRealization: 1,
     rounding: "exact",        // exact | nearest10 | nearest100
     areaUnit: "sqft",         // sqft | msf
-    basemap: "light",         // light | dark | osm
     showZoning: true,
     showNonCandidates: true,
     showBadges: true,
@@ -162,11 +160,10 @@
         console.error("[scenario-studio] setting " + key + " has the wrong type, using default.");
         return;
       }
-      if (typeof def === "string" && ["rounding", "areaUnit", "basemap", "districtSort", "defaultPreset"].indexOf(key) >= 0) {
+      if (typeof def === "string" && ["rounding", "areaUnit", "districtSort", "defaultPreset"].indexOf(key) >= 0) {
         var allowed = {
           rounding: ["exact", "nearest10", "nearest100"],
           areaUnit: ["sqft", "msf"],
-          basemap: ["light", "dark", "osm"],
           districtSort: ["homes", "jobs", "acres", "name"],
           defaultPreset: ["base", "full", "partial40"],
         }[key];
@@ -392,6 +389,11 @@
   var mapLoaded = false;
 
   function initMap() {
+    /* The center and zoom below are a fallback only. Once the style
+     * loads, fitToStudyArea re-centres on the zoning polygons, so the
+     * study parcels are visible on first paint instead of starting
+     * off-screen. If the data failed to load, initMap is never called
+     * and the error banner shows instead. */
     map = new maplibregl.Map({
       container: "map",
       style: {
@@ -399,9 +401,9 @@
         sources: {
           basemap: {
             type: "raster",
-            tiles: BASEMAPS[settings.basemap].tiles,
+            tiles: BASEMAP.tiles,
             tileSize: 256,
-            attribution: BASEMAPS[settings.basemap].attribution,
+            attribution: BASEMAP.attribution,
           },
         },
         layers: [{ id: "basemap", type: "raster", source: "basemap" }],
@@ -413,6 +415,7 @@
     map.on("load", function () {
       mapLoaded = true;
       addMapSources();
+      fitToStudyArea();
       applyMapSettings();
       paintParcels();
       wireMapEvents();
@@ -447,6 +450,45 @@
       id: "zoning-line", type: "line", source: "zoning",
       paint: { "line-color": "#16324a", "line-width": 2, "line-dasharray": [4, 2] },
     });
+  }
+
+  /* Fit the initial view to the study area. The zoning polygons bound
+   * every parcel, so their bounding box puts the whole study area on
+   * screen at first paint. Runs once, when the style loads and the data
+   * is already in hand (initMap is only called after loadData
+   * resolves). If the bounds cannot be computed, it logs the reason
+   * and leaves the fallback centre in place; it never fails silently. */
+  function fitToStudyArea() {
+    var bounds = null;
+    function extend(lng, lat) {
+      if (typeof lng !== "number" || typeof lat !== "number" || isNaN(lng) || isNaN(lat)) { return; }
+      if (!bounds) { bounds = [[lng, lat], [lng, lat]]; return; }
+      bounds[0][0] = Math.min(bounds[0][0], lng);
+      bounds[0][1] = Math.min(bounds[0][1], lat);
+      bounds[1][0] = Math.max(bounds[1][0], lng);
+      bounds[1][1] = Math.max(bounds[1][1], lat);
+    }
+    function walk(coords) {
+      if (!Array.isArray(coords)) { return; }
+      if (typeof coords[0] === "number") { extend(coords[0], coords[1]); return; }
+      coords.forEach(walk);
+    }
+    if (!state.data || !state.data.zoning || !Array.isArray(state.data.zoning.features)) {
+      console.error("[scenario-studio] cannot fit the map: no zoning data in hand.");
+      return;
+    }
+    state.data.zoning.features.forEach(function (feature) {
+      if (feature.geometry) { walk(feature.geometry.coordinates); }
+    });
+    if (!bounds) {
+      console.error("[scenario-studio] cannot fit the map: zoning polygons hold no coordinates.");
+      return;
+    }
+    try {
+      map.fitBounds(bounds, { padding: 40, maxZoom: 15, duration: 0 });
+    } catch (err) {
+      console.error("[scenario-studio] fit to study area failed, keeping the fallback view: " + err.message);
+    }
   }
 
   /* Constraint class of a district, used by the constraint color mode and
@@ -560,17 +602,11 @@
     });
   }
 
-  /* Settings that touch the map, applied immediately on change. */
+  /* Settings that touch the map, applied immediately on change. There
+   * is no basemap switch here: OpenStreetMap is the only basemap, so
+   * there is nothing to switch to. */
   function applyMapSettings() {
     if (!mapLoaded) { return; }
-    var source = map.getSource("basemap");
-    if (source && source.setTiles) {
-      try {
-        source.setTiles(BASEMAPS[settings.basemap].tiles);
-      } catch (err) {
-        console.error("[scenario-studio] basemap switch failed: " + err.message);
-      }
-    }
     map.setLayoutProperty("zoning-line", "visibility",
       settings.showZoning ? "visible" : "none");
     map.setFilter("parcels-fill", settings.showNonCandidates ? null : ["==", ["get", "candidate"], true]);
@@ -1033,7 +1069,6 @@
     bindSelect("set-default-realization", "defaultRealization");
     bindSelect("set-rounding", "rounding", function () { renderTotals(); renderDistrictTable(); });
     bindSelect("set-area-unit", "areaUnit", function () { renderTotals(); renderDistrictTable(); });
-    bindSelect("set-basemap", "basemap", applyMapSettings);
     bindCheck("set-show-zoning", "showZoning", applyMapSettings);
     bindCheck("set-show-noncandidates", "showNonCandidates", applyMapSettings);
     bindCheck("set-show-badges", "showBadges", function () { if (state.selectedDistrict) { openDistrictDrawer(state.selectedDistrict); } });
@@ -1064,7 +1099,6 @@
     $("set-default-realization").value = String(settings.defaultRealization);
     $("set-rounding").value = settings.rounding;
     $("set-area-unit").value = settings.areaUnit;
-    $("set-basemap").value = settings.basemap;
     $("set-show-zoning").checked = settings.showZoning;
     $("set-show-noncandidates").checked = settings.showNonCandidates;
     $("set-show-badges").checked = settings.showBadges;
