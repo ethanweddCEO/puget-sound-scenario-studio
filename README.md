@@ -174,7 +174,6 @@ notes, never modeled.
 | Default realization rate | The realization a fresh visit opens on |
 | Number rounding | Homes and jobs shown exact, or rounded to the nearest 10 / 100 |
 | Floor area unit | Floor area shown in sq ft or million sq ft |
-| Basemap style | Switches the raster basemap (light / dark / OpenStreetMap) |
 | Show zoning boundaries | Shows or hides the zoning outline layer |
 | Show non-candidate parcels | Shows or hides parcels that failed the redevelopment screen |
 | Show verification badges | Shows or hides the reproduction-only badges in the drawer |
@@ -185,6 +184,14 @@ notes, never modeled.
 | Sort districts by | Re-sorts the district table (homes / jobs / acres / name) |
 
 Settings persist in localStorage. Resetting them restores defaults.
+
+Basemap: OpenStreetMap raster tiles only. CARTO Light and Dark were
+removed 2026-11-13: CARTO now answers its basemap tiles with an
+"API KEY REQUIRED" placeholder, and the app has no key input, so the
+options could not work. A saved `basemap` value in an older localStorage
+entry is ignored by the settings loader; there is nothing to migrate.
+The map also fits its initial view to the zoning polygons on load, so
+the study parcels are visible on first paint.
 
 ## Provenance and honesty
 
@@ -220,8 +227,9 @@ asking first.
 
 ## Branches
 
-Work lands on a branch (`phase-1-mvp` for the MVP, `mobile-ui-pass` for
-the mobile layout pass). Nothing merges to `main` without Ethan's yes.
+Work lands on a branch (`phase-1-mvp` for the MVP, `mobile-ui` for the
+mobile layout pass, `map-fixes` for the basemap and initial-view fixes).
+Nothing merges to `main` without Ethan's yes.
 GitHub Pages serves `phase-1-mvp` at
 https://ethanweddCEO.github.io/puget-sound-scenario-studio/ (the repo is
 public; the data-license check passed 2026-11-13, no blocker). The live
