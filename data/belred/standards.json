@@ -1,0 +1,467 @@
+{
+ "snapshot_date": "2026-11-09",
+ "source": "Bellevue Land Use Code LUC 20.25D.080 Chart A and LUC 20.25D.090",
+ "defaults": {
+  "net_factor": 0.85,
+  "sqft_per_home": 950,
+  "sqft_per_job": 350,
+  "res_share_by_group": {
+   "NODE": 0.6,
+   "CORE_MIXED": 0.5,
+   "CORE_MEDICAL": 0.0,
+   "EDGE_GC": 0.25,
+   "EDGE_RES": 0.8,
+   "EDGE_ORT": 0.5
+  }
+ },
+ "districts": {
+  "BR-RC-1": {
+   "code": "BR-RC-1",
+   "name": "BelRed Residential/Commercial Node 1",
+   "height_base_ft": 45.0,
+   "height_max_ft": 150.0,
+   "far_base": 1.0,
+   "far_max": 4.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A as reproduced in Colliers offering memorandum for 1829-1831 130th Ave NE (Apr 2021), saved in phase5/work/sources; FAR 1.0 base and 4.0 max corroborated by City of Bellevue 130th TOD Feasibility Analysis (Dec 7 2018); incentive tiers per LUC 20.25D.090 code text read at bellevue.municipal.codes",
+   "notes": "Node core district. Tier 1 amenity bonus 2.5 FAR plus Tier 2 0.5 FAR per LUC 20.25D.090. Ground floor retail inside the nodes is fully exempt from FAR per LUC 20.25D.080.B.3.",
+   "group": "NODE",
+   "res_share": 0.6,
+   "candidate_parcels": 27,
+   "candidate_acres": 32.98541112256149,
+   "has_incentive_system": true,
+   "incentive_tiers": {
+    "tier1_far": 2.5,
+    "tier2_far": 0.5
+   },
+   "flags": {
+    "capped_no_incentive": false,
+    "incentive_dependent": true,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": [
+     "height_base_ft"
+    ]
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Receiving district for transferred floor area under LUC 20.25D.080.D."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-RC-2": {
+   "code": "BR-RC-2",
+   "name": "BelRed Residential/Commercial Node 2",
+   "height_base_ft": 45.0,
+   "height_max_ft": 125.0,
+   "far_base": 1.0,
+   "far_max": 4.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); max FAR 4.0 and residential height 125 ft also stated in the same memorandum's zoning summary; incentive tiers per LUC 20.25D.090 code text",
+   "notes": "Node district outside the node core; heights step down from RC-1 per the LUC 20.10.375 purpose statement. Tier 1 2.5 FAR plus Tier 2 0.5 FAR per LUC 20.25D.090.",
+   "group": "NODE",
+   "res_share": 0.6,
+   "candidate_parcels": 39,
+   "candidate_acres": 38.92646388197768,
+   "has_incentive_system": true,
+   "incentive_tiers": {
+    "tier1_far": 2.5,
+    "tier2_far": 0.5
+   },
+   "flags": {
+    "capped_no_incentive": false,
+    "incentive_dependent": true,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": [
+     "height_max_ft"
+    ]
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Receiving district for transferred floor area under LUC 20.25D.080.D."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-RC-3": {
+   "code": "BR-RC-3",
+   "name": "BelRed Residential/Commercial Node 3",
+   "height_base_ft": 45.0,
+   "height_max_ft": 70.0,
+   "far_base": 1.0,
+   "far_max": 4.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); incentive tiers per LUC 20.25D.090 code text",
+   "notes": "Transitional node district near mature neighborhoods. Height values carry chart footnotes (13) and (15); the 70 ft maximum aligns with the 156th Ave NE height note in LUC 20.25D.080 as published. FAR can reach 4.0 through amenities but height caps at 70 ft, so the full FAR is unlikely to be usable on most sites. Not a receiving district for transferred floor area under LUC 20.25D.080.D.",
+   "group": "NODE",
+   "res_share": 0.6,
+   "candidate_parcels": 2,
+   "candidate_acres": 4.327005333599996,
+   "has_incentive_system": true,
+   "incentive_tiers": {
+    "tier1_far": 2.5,
+    "tier2_far": 0.5
+   },
+   "flags": {
+    "capped_no_incentive": false,
+    "incentive_dependent": true,
+    "height_may_bind": true
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": [
+     "height_max_ft"
+    ]
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Not a receiving district for transferred floor area under LUC 20.25D.080.D."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-OR-1": {
+   "code": "BR-OR-1",
+   "name": "BelRed Office/Residential Node 1",
+   "height_base_ft": 45.0,
+   "height_max_ft": 150.0,
+   "far_base": 1.0,
+   "far_max": 4.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); maximum FAR 4.0 corroborated by City of Bellevue staff report 18-105685-LD (Spring District Tract K), Table 2, citing LUC 20.25D.080.A, which also states the first 1.0 FAR is not counted toward amenity requirements; incentive tiers per LUC 20.25D.090 code text",
+   "notes": "Spring District node. New development on sites over 5 acres and under 30 acres (as of May 26 2009) must provide at least 20 percent of gross square feet as residential per the LUC 20.25D.080 chart notes. Tier 1 2.5 FAR plus Tier 2 0.5 FAR.",
+   "group": "NODE",
+   "res_share": 0.6,
+   "candidate_parcels": 6,
+   "candidate_acres": 7.065092397237075,
+   "has_incentive_system": true,
+   "incentive_tiers": {
+    "tier1_far": 2.5,
+    "tier2_far": 0.5
+   },
+   "flags": {
+    "capped_no_incentive": false,
+    "incentive_dependent": true,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": [
+     "height_max_ft"
+    ]
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Receiving district for transferred floor area under LUC 20.25D.080.D."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-OR-2": {
+   "code": "BR-OR-2",
+   "name": "BelRed Office/Residential Node 2",
+   "height_base_ft": 45.0,
+   "height_max_ft": 125.0,
+   "far_base": 1.0,
+   "far_max": 4.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); Spring District staff reports apply a Land Use Code maximum of 4.0 FAR across the OR-1/OR-2 master development plan area; incentive tiers per LUC 20.25D.090 code text",
+   "notes": "Node district outside the node core. Tier 1 2.5 FAR plus Tier 2 0.5 FAR per LUC 20.25D.090.",
+   "group": "NODE",
+   "res_share": 0.6,
+   "candidate_parcels": 12,
+   "candidate_acres": 48.68125431428978,
+   "has_incentive_system": true,
+   "incentive_tiers": {
+    "tier1_far": 2.5,
+    "tier2_far": 0.5
+   },
+   "flags": {
+    "capped_no_incentive": false,
+    "incentive_dependent": true,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": [
+     "height_max_ft"
+    ]
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Receiving district for transferred floor area under LUC 20.25D.080.D."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-CR": {
+   "code": "BR-CR",
+   "name": "BelRed Commercial/Residential",
+   "height_base_ft": 45.0,
+   "height_max_ft": 70.0,
+   "far_base": 1.0,
+   "far_max": 2.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A and subsection D; LUC 20.25D.090",
+   "source_basis": "FAR base 1.0 and maximum 2.0 stated in the worked example in LUC 20.25D.080.D code text read at bellevue.municipal.codes; chart reproduction (Colliers OM, Apr 2021) agrees; heights corroborated by the city-commissioned appraisal of 12000 Bel-Red Rd (Sep 24 2024) stating base height 45 ft and maximum height 70 ft",
+   "notes": "Tier 1 amenity bonus 1.0 FAR, no Tier 2, per LUC 20.25D.090. Height values carry chart footnotes (13) and (15). Receiving district for transferred floor area under LUC 20.25D.080.D.",
+   "group": "CORE_MIXED",
+   "res_share": 0.5,
+   "candidate_parcels": 95,
+   "candidate_acres": 114.97860785029108,
+   "has_incentive_system": true,
+   "incentive_tiers": {
+    "tier1_far": 1.0,
+    "tier2_far": 0.0
+   },
+   "flags": {
+    "capped_no_incentive": false,
+    "incentive_dependent": true,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": []
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Receiving district for transferred floor area under LUC 20.25D.080.D."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-OR": {
+   "code": "BR-OR",
+   "name": "BelRed Office/Residential",
+   "height_base_ft": 70.0,
+   "height_max_ft": 70.0,
+   "far_base": 1.0,
+   "far_max": 1.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); BR-OR is not listed in the FAR Amenity Incentive System tiers in LUC 20.25D.090 code text, so no bonus FAR is available and maximum equals base",
+   "notes": "No incentive tiers. Up to 1.0 FAR of affordable housing floor area in congregate care, nursing home or assisted living projects is exempt from FAR in BR-OR per LUC 20.25D.080.B.3, and up to 1.0 FAR of the care use itself is exempt if the residential fee-in-lieu is paid. Not a receiving district for transferred floor area.",
+   "group": "CORE_MIXED",
+   "res_share": 0.5,
+   "candidate_parcels": 14,
+   "candidate_acres": 59.59833994604563,
+   "has_incentive_system": false,
+   "incentive_tiers": null,
+   "flags": {
+    "capped_no_incentive": true,
+    "incentive_dependent": false,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": [
+     "height_max_ft",
+     "far_base"
+    ]
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Up to 1.0 FAR of affordable housing floor area in a congregate care senior housing, nursing home, or assisted living project is not counted, and up to 1.0 FAR of the care use itself is not counted if the residential fee-in-lieu is paid (LUC 20.25D.080.B.3). This is the one material above-maximum path in this capped district, and it applies only to care uses."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-MO": {
+   "code": "BR-MO",
+   "name": "BelRed Medical Office",
+   "height_base_ft": 70.0,
+   "height_max_ft": 70.0,
+   "far_base": 1.0,
+   "far_max": 1.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); base FAR 1.0 corroborated by City of Bellevue staff report 16-126684-AD (Apr 7 2016); BR-MO is not listed in the incentive tiers in LUC 20.25D.090 code text (the node district BR-MO-1 is), so maximum equals base for the plain BR-MO district in the study area",
+   "notes": "Standard residential is not permitted in BR-MO; residential uses are limited to senior housing, nursing homes, assisted living, supportive housing, hotels and motels, and ADUs (City LUCA staff analysis, Jul 8 2026). Up to 1.0 FAR of affordable housing in care projects and up to 1.0 FAR of the care use itself are exempt from FAR per LUC 20.25D.080.B.3. The separate BR-MO-1 node district (base FAR 1.0, max FAR 4.0, heights 45 and 150 ft) is not in the study area; its former polygons were rezoned MU-H by Ordinance 6847 in 2025 per the city zoning service.",
+   "group": "CORE_MEDICAL",
+   "res_share": 0.0,
+   "candidate_parcels": 69,
+   "candidate_acres": 46.03904466101051,
+   "has_incentive_system": false,
+   "incentive_tiers": null,
+   "flags": {
+    "capped_no_incentive": true,
+    "incentive_dependent": false,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": []
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Up to 1.0 FAR of affordable housing floor area in a congregate care senior housing, nursing home, or assisted living project is not counted, and up to 1.0 FAR of the care use itself is not counted if the residential fee-in-lieu is paid (LUC 20.25D.080.B.3). This is the one material above-maximum path in this capped district, and it applies only to care uses."
+   ],
+   "exemptions_modeled": false,
+   "open_item": {
+    "title": "BR-MO vs BR-MO-1 swing",
+    "detail": "A City LUCA staff analysis (2026-07-08) describes the 116th Ave medical corridor, labeled BR-MO, at base FAR 1.0, max FAR 4.0, heights 45/150 ft, which are the chart values for the separate BR-MO-1 node district. The city zoning service codes the study polygons BR-MO and distinguishes BR-MO-1 where it applies, and no BR-MO-1 polygons remain (former node polygons rezoned MU-H by Ordinance 6847 in 2025). This build applies plain BR-MO (FAR 1.0 flat, 70 ft). If node standards ultimately apply, BR-MO capacity rises from 4,870 jobs to about 19,482 jobs at the maximum bound."
+   }
+  },
+  "BR-GC": {
+   "code": "BR-GC",
+   "name": "BelRed General Commercial",
+   "height_base_ft": 45.0,
+   "height_max_ft": 45.0,
+   "far_base": 1.0,
+   "far_max": 1.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); corroborated by City of Bellevue BelRed Look Forward LUCA staff analysis (May 27 2026) stating BR-GC cannot earn additional FAR through the amenity system and that the proposed nonresidential maximum of 2.0 is a 1.0 uplift over current",
+   "notes": "No incentive tiers. Maximum equals base for both residential and nonresidential.",
+   "group": "EDGE_GC",
+   "res_share": 0.25,
+   "candidate_parcels": 57,
+   "candidate_acres": 84.26048920957926,
+   "has_incentive_system": false,
+   "incentive_tiers": null,
+   "flags": {
+    "capped_no_incentive": true,
+    "incentive_dependent": false,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": [
+     "height_max_ft"
+    ]
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-R": {
+   "code": "BR-R",
+   "name": "BelRed Residential",
+   "height_base_ft": 30.0,
+   "height_max_ft": 45.0,
+   "far_base": 1.0,
+   "far_max": 2.0,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); corroborated by the SpringVue Townhomes zoning analysis in the project submittal on bellevuewa.gov citing LUC 20.25D.080 and 20.25D.090 (height 30 ft base and 45 ft max, FAR 1.0 base and 2.0 max, impervious 75 percent)",
+   "notes": "Tier 1 amenity bonus 1.0 FAR, no Tier 2, per LUC 20.25D.090. Receiving district for transferred floor area under LUC 20.25D.080.D.",
+   "group": "EDGE_RES",
+   "res_share": 0.8,
+   "candidate_parcels": 7,
+   "candidate_acres": 38.97687714200219,
+   "has_incentive_system": true,
+   "incentive_tiers": {
+    "tier1_far": 1.0,
+    "tier2_far": 0.0
+   },
+   "flags": {
+    "capped_no_incentive": false,
+    "incentive_dependent": true,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": []
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes.",
+    "Receiving district for transferred floor area under LUC 20.25D.080.D."
+   ],
+   "exemptions_modeled": false
+  },
+  "BR-ORT": {
+   "code": "BR-ORT",
+   "name": "BelRed Office/Residential Transition",
+   "height_base_ft": 45.0,
+   "height_max_ft": 45.0,
+   "far_base": 0.75,
+   "far_max": 0.75,
+   "density_limit": "None in chart; FAR governs",
+   "max_impervious_pct": 75.0,
+   "citation": "LUC 20.25D.080 Chart 20.25D.080.A; LUC 20.25D.090",
+   "source_basis": "Chart 20.25D.080.A reproduction (Colliers OM, Apr 2021); BR-ORT is not listed in the incentive tiers in LUC 20.25D.090 code text, so maximum equals base",
+   "notes": "Lowest intensity district in the study area and the only one with nonzero minimum setbacks in the chart (20 ft front, 30 ft rear, 20 ft side). Height values carry chart footnote (11), whose text was not recovered. Not a receiving district for transferred floor area.",
+   "group": "EDGE_ORT",
+   "res_share": 0.5,
+   "candidate_parcels": 35,
+   "candidate_acres": 31.816714740303077,
+   "has_incentive_system": false,
+   "incentive_tiers": null,
+   "flags": {
+    "capped_no_incentive": true,
+    "incentive_dependent": false,
+    "height_may_bind": false
+   },
+   "verification": {
+    "chart_grid_basis": "Chart 20.25D.080.A as reproduced in the 2021 Colliers offering memorandum, corroborated district by district against official City of Bellevue documents where one exists",
+    "reproduction_only_fields": [
+     "height_max_ft",
+     "far_base"
+    ]
+   },
+   "far_exemptions": [
+    "Floor area for affordable housing, public restrooms, and child care or nonprofit uses is not counted toward FAR (LUC 20.25D.080.B.3).",
+    "Ground floor retail meeting the LUC 20.25D.130.A criteria is not counted: inside the nodes, not counted at all; outside the nodes, tenant space is eligible up to 60 ft of depth, only in a multi-story multi-use building.",
+    "Enclosed plazas are not counted, up to 4,000 sq ft per project, with public access conditions (LUC 20.25D.080.B.3).",
+    "Land dedicated to the city for right of way, the light rail alignment, parks, or open space still counts toward the lot area used to compute maximum FAR, and the resulting floor area is transferable under LUC 20.25D.080.D to receiving sites, capped at an effective site FAR 0.5 above the receiving district maximum.",
+    "Underground buildings are not structures for floor area purposes."
+   ],
+   "exemptions_modeled": false
+  }
+ }
+}

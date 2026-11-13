@@ -1,0 +1,20 @@
+{
+ "source": "capacity_v2_by_district.csv",
+ "base_100pct": {
+  "homes": 8990,
+  "jobs": 28462
+ },
+ "max_100pct": {
+  "homes": 21705,
+  "jobs": 52123
+ },
+ "base_50pct": {
+  "homes": 4495,
+  "jobs": 14231
+ },
+ "max_50pct": {
+  "homes": 10853,
+  "jobs": 26062
+ },
+ "tolerance": 1
+}

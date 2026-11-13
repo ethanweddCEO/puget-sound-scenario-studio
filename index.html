@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puget Sound Scenario Studio: Bel Red</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-title">
+    <h1>Puget Sound Scenario Studio</h1>
+    <span class="study-area">Study area: Bel Red, Bellevue WA</span>
+  </div>
+  <div class="topbar-actions">
+    <button id="btn-save" type="button" title="Download the current scenario as a JSON file">Save scenario</button>
+    <button id="btn-load" type="button" title="Load a scenario JSON file">Load scenario</button>
+    <input id="file-load" type="file" accept=".json,application/json" hidden>
+    <button id="btn-link" type="button" title="Copy a link that opens this exact scenario">Copy share link</button>
+    <button id="btn-settings" type="button" title="Display and behavior settings">Settings</button>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- Left: scenario controls. Every control here changes the model, the
+       map, or the results. See README for a one-line reason per control. -->
+  <section class="panel panel-left" id="panel-controls" aria-label="Scenario controls">
+    <h2>Scenario</h2>
+
+    <div class="preset-row" role="group" aria-label="Presets">
+      <button class="preset" data-preset="base" type="button">Base FAR</button>
+      <button class="preset" data-preset="full" type="button">Full incentives</button>
+      <button class="preset" data-preset="partial40" type="button">40% participation</button>
+      <button class="preset preset-luca" type="button" disabled
+        title="Disabled: the LUCA preset needs the draft LUCA standards extracted into the v2 table format first (Phase 2).">LUCA draft (Phase 2)</button>
+    </div>
+    <p class="preset-note" id="preset-label">Preset: Current code, base FAR</p>
+
+    <label class="slider-label">Incentive participation
+      <span class="slider-value" id="val-participation">0%</span>
+      <input id="ctl-participation" type="range" min="0" max="100" step="1" value="0">
+    </label>
+    <p class="hint">Share of the FAR Amenity Incentive System (LUC 20.25D.090) a project uses. Capped districts never move above base FAR.</p>
+
+    <label class="slider-label">Realization rate
+      <span class="slider-value" id="val-realization">100%</span>
+      <input id="ctl-realization" type="range" min="0" max="100" step="5" value="100">
+    </label>
+    <p class="hint">Share of screened capacity assumed to actually build. The v2 comparison case is 50%.</p>
+
+    <label class="slider-label">Sq ft per home
+      <span class="slider-value" id="val-sqft-home">950</span>
+      <input id="ctl-sqft-home" type="range" min="600" max="1500" step="10" value="950">
+    </label>
+
+    <label class="slider-label">Sq ft per job
+      <span class="slider-value" id="val-sqft-job">350</span>
+      <input id="ctl-sqft-job" type="range" min="200" max="600" step="10" value="350">
+    </label>
+
+    <label class="slider-label">Net factor
+      <span class="slider-value" id="val-net-factor">0.85</span>
+      <input id="ctl-net-factor" type="range" min="0.70" max="1.00" step="0.01" value="0.85">
+    </label>
+    <p class="hint">Share of gross floor area counted as buildable after circulation, walls, and structure.</p>
+
+    <h3>Districts in this scenario</h3>
+    <p class="hint">Uncheck a district to exclude its parcels from the totals and the map.</p>
+    <ul class="district-checks" id="district-checks"></ul>
+
+    <details class="advanced">
+      <summary>Advanced: residential share by group</summary>
+      <p class="hint">Override the v2 residential share of floor area for a district group. Changing a share re-runs the model.</p>
+      <div id="reshare-controls"></div>
+      <button id="btn-reshare-reset" type="button">Reset shares to v2 defaults</button>
+    </details>
+  </section>
+
+  <!-- Center: map -->
+  <section class="map-wrap" aria-label="Map">
+    <div id="map"></div>
+    <div class="map-toolbar">
+      <label>Color parcels by
+        <select id="ctl-colormode">
+          <option value="district">District</option>
+          <option value="capacity">Capacity contribution</option>
+          <option value="constraint">Constraint status</option>
+          <option value="candidate">Candidate vs excluded</option>
+        </select>
+      </label>
+      <span class="map-legend" id="map-legend"></span>
+    </div>
+    <!-- Detail drawer: parcel or district, opened by clicking the map or a table row -->
+    <aside class="drawer" id="drawer" hidden aria-label="Details">
+      <button class="drawer-close" id="drawer-close" type="button" aria-label="Close details">Close</button>
+      <div id="drawer-body"></div>
+    </aside>
+  </section>
+
+  <!-- Right: results -->
+  <section class="panel panel-right" id="panel-results" aria-label="Results">
+    <h2>Results</h2>
+    <p class="gross-note">Capacity is <strong>gross</strong>, not net of existing homes or jobs.</p>
+
+    <div class="totals">
+      <div class="total-row"><span>Gross floor area</span><strong id="tot-gross">--</strong></div>
+      <div class="total-row big"><span>Homes</span><strong id="tot-homes">--</strong></div>
+      <div class="total-row big"><span>Jobs</span><strong id="tot-jobs">--</strong></div>
+      <div class="total-row"><span>Candidate parcels</span><strong id="tot-parcels">--</strong></div>
+      <div class="total-row"><span>Candidate acres</span><strong id="tot-acres">--</strong></div>
+    </div>
+
+    <h3>Compare against</h3>
+    <label class="compare-label">Baseline
+      <select id="ctl-baseline">
+        <option value="">No comparison</option>
+        <option value="base">Base FAR preset</option>
+        <option value="full">Full incentives preset</option>
+        <option value="partial40">40% participation preset</option>
+        <option value="snapshot">Snapshot of current scenario</option>
+      </select>
+    </label>
+    <button id="btn-snapshot" type="button">Snapshot current scenario as baseline</button>
+    <div class="totals compare" id="compare-block" hidden>
+      <div class="total-row"><span>Baseline homes</span><strong id="cmp-homes">--</strong></div>
+      <div class="total-row"><span>Baseline jobs</span><strong id="cmp-jobs">--</strong></div>
+      <div class="total-row delta"><span>Delta homes</span><strong id="delta-homes">--</strong></div>
+      <div class="total-row delta"><span>Delta jobs</span><strong id="delta-jobs">--</strong></div>
+    </div>
+
+    <h3>Districts</h3>
+    <div class="table-scroll">
+    <table class="district-table" id="district-table">
+      <thead><tr>
+        <th data-sort="name">District</th>
+        <th data-sort="acres">Acres</th>
+        <th data-sort="far">Eff. FAR</th>
+        <th data-sort="homes">Homes</th>
+        <th data-sort="jobs">Jobs</th>
+        <th class="flag-col">Flags</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+    <p class="hint">Click a district row for its standards, citations, exemptions, and verification status. Click a column header to sort.</p>
+
+    <h3>Constraints in this scenario</h3>
+    <ul class="constraints" id="constraints"></ul>
+
+    <details class="gaps">
+      <summary>Known gaps and caveats</summary>
+      <ul id="gaps-list"></ul>
+    </details>
+
+    <footer class="provenance">
+      <p>Code snapshot: <strong>2026-11-09</strong> (Bellevue Land Use Code, LUC 20.25D.080 / 20.25D.090).</p>
+      <p>BelRed Look Forward LUCA: <strong>draft, not adopted</strong>. If adopted, the standards must be re-extracted and this scenario re-run.</p>
+      <p>Standards: <span id="prov-standards">Bel Red, verified per the v2 addendum</span>.</p>
+      <p><a href="https://github.com/ethanweddCEO/puget-sound-scenario-studio" target="_blank" rel="noopener">Repository</a> (public)</p>
+    </footer>
+  </section>
+</main>
+
+<!-- Mobile section nav: shown only below 760px (see css/style.css). Plain
+     anchor links, so it works with touch, mouse, and keyboard, and needs
+     no JavaScript. It jumps to the map, the results, or the scenario
+     controls without scrolling past the other two. -->
+<nav class="mobile-nav" aria-label="Sections">
+  <a href="#map">Map</a>
+  <a href="#panel-results">Results</a>
+  <a href="#panel-controls">Scenario</a>
+</nav>
+
+<!-- Settings panel: every setting changes real behavior. See README. -->
+<aside class="settings" id="settings-panel" hidden aria-label="Settings">
+  <h2>Settings</h2>
+  <button class="drawer-close" id="settings-close" type="button" aria-label="Close settings">Close</button>
+
+  <h3>Defaults for a fresh visit</h3>
+  <label>Default preset
+    <select id="set-default-preset">
+      <option value="base">Current code, base FAR</option>
+      <option value="full">Current code, full incentives</option>
+      <option value="partial40">Current code, 40% participation</option>
+    </select>
+  </label>
+  <label>Default realization rate
+    <select id="set-default-realization">
+      <option value="1">100%</option>
+      <option value="0.75">75%</option>
+      <option value="0.5">50% (v2 comparison case)</option>
+    </select>
+  </label>
+  <p class="hint">A shared link always wins over these defaults: opening a link restores the scenario in the link.</p>
+
+  <h3>Number display</h3>
+  <label>Home and job figures
+    <select id="set-rounding">
+      <option value="exact">Exact whole numbers</option>
+      <option value="nearest10">Rounded to nearest 10</option>
+      <option value="nearest100">Rounded to nearest 100</option>
+    </select>
+  </label>
+  <label>Floor area unit
+    <select id="set-area-unit">
+      <option value="sqft">Square feet</option>
+      <option value="msf">Million sq ft</option>
+    </select>
+  </label>
+
+  <h3>Map</h3>
+  <label>Basemap style
+    <select id="set-basemap">
+      <option value="light">Light (Carto)</option>
+      <option value="dark">Dark (Carto)</option>
+      <option value="osm">OpenStreetMap</option>
+    </select>
+  </label>
+  <label class="check"><input type="checkbox" id="set-show-zoning" checked> Show zoning boundaries</label>
+  <label class="check"><input type="checkbox" id="set-show-noncandidates" checked> Show non-candidate parcels on the map</label>
+
+  <h3>Evidence display</h3>
+  <label class="check"><input type="checkbox" id="set-show-badges" checked> Show verification badges</label>
+  <label class="check"><input type="checkbox" id="set-show-citations" checked> Show code citations</label>
+  <label class="check"><input type="checkbox" id="set-show-flags" checked> Show constraint flags</label>
+  <label class="check"><input type="checkbox" id="set-show-gross" checked> Show gross floor area in results</label>
+  <label class="check"><input type="checkbox" id="set-show-delta" checked> Show delta vs comparison baseline</label>
+
+  <h3>District table</h3>
+  <label>Sort districts by
+    <select id="set-district-sort">
+      <option value="homes">Homes, high to low</option>
+      <option value="jobs">Jobs, high to low</option>
+      <option value="acres">Candidate acres, high to low</option>
+      <option value="name">District code, A to Z</option>
+    </select>
+  </label>
+
+  <button id="btn-settings-reset" type="button">Reset all settings to defaults</button>
+</aside>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="js/model.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
