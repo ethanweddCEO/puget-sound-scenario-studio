@@ -7,7 +7,12 @@
  *   max preset at 100% realization   -> 21,705 homes / 52,123 jobs
  *   base preset at 50% realization   ->  4,495 homes / 14,231 jobs
  *   max preset at 50% realization    -> 10,853 homes / 26,062 jobs
- * Tolerance is 1 home/job (rounding). Exit code 0 means all four pass.
+ * Tolerance is 1 home/job (rounding). It also checks the how-to guide:
+ * the Guide button and panel exist in index.html, every id guide.js
+ * queries exists, every section has content, the glossary names the
+ * required terms, the worked examples carry the verified model figures,
+ * the guide copy has no em dash, and the panel open/close logic works
+ * against a minimal DOM stub. Exit code 0 means all checks pass.
  */
 "use strict";
 
@@ -64,6 +69,87 @@ console.log((moOk ? "PASS" : "FAIL") + "  BR-MO spot check: " +
   Math.round(mo.homes) + " homes / " + Math.round(mo.jobs) +
   " jobs (expected 0 / 4,870)");
 allPass = allPass && moOk;
+
+/* --- How-to guide checks --- */
+
+var guideOk = true;
+function guideCheck(label, ok, detail) {
+  console.log((ok ? "PASS" : "FAIL") + "  guide: " + label + (detail ? " (" + detail + ")" : ""));
+  guideOk = guideOk && ok;
+}
+
+var guide = require("../js/guide.js");
+var indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+var guideSrc = fs.readFileSync(path.join(root, "js", "guide.js"), "utf8");
+
+var htmlIds = {};
+var idRe = /id="([^"]+)"/g;
+var idMatch;
+while ((idMatch = idRe.exec(indexHtml)) !== null) { htmlIds[idMatch[1]] = true; }
+
+guideCheck("Guide button exists in index.html", !!htmlIds["btn-guide"]);
+guideCheck("Guide panel exists in index.html", !!htmlIds["guide-panel"]);
+var missingIds = guide.IDS_USED.filter(function (id) { return !htmlIds[id]; });
+guideCheck("every id guide.js queries exists in index.html", missingIds.length === 0,
+  missingIds.length ? "missing: " + missingIds.join(", ") : "7 ids");
+
+var emptySections = guide.SECTIONS.filter(function (s) { return !s.title || !s.html; });
+guideCheck("every guide section has a title and body (" + guide.SECTIONS.length + " sections)",
+  emptySections.length === 0);
+var expectedSections = ["guide-what", "guide-tour", "guide-controls", "guide-glossary", "guide-examples", "guide-caveats"];
+var sectionIds = guide.SECTIONS.map(function (s) { return s.id; });
+var missingSections = expectedSections.filter(function (id) { return sectionIds.indexOf(id) < 0; });
+guideCheck("all six required sections present", missingSections.length === 0,
+  missingSections.length ? "missing: " + missingSections.join(", ") : "");
+
+var guideText = guide.SECTIONS.map(function (s) { return s.html; }).join(" ");
+var guideTextLower = guideText.toLowerCase();
+var requiredTerms = ["FAR", "LUCA", "LUC", "candidate parcel", "realization rate",
+  "net factor", "BR-MO", "BR-RC-3", "PIN", "Tier 1"];
+var missingTerms = requiredTerms.filter(function (t) { return guideTextLower.indexOf(t.toLowerCase()) < 0; });
+guideCheck("glossary and examples name the required terms", missingTerms.length === 0,
+  missingTerms.length ? "missing: " + missingTerms.join(", ") : "");
+
+/* Worked-example figures must match the verified model runs, not prose:
+ * base 8,990 / 28,462, full 21,705 / 52,123, 40% participation
+ * 14,076 / 37,926, base at 50% 4,495 / 14,231. */
+var requiredFigures = ["8,990", "28,462", "21,705", "52,123", "14,076", "37,926", "4,495", "14,231"];
+var missingFigures = requiredFigures.filter(function (f) { return guideText.indexOf(f) < 0; });
+guideCheck("worked examples carry the verified model figures", missingFigures.length === 0,
+  missingFigures.length ? "missing: " + missingFigures.join(", ") : "");
+
+/* Standing copy rule: no em dash in the guide source. The escape below
+ * is the check itself, not a literal em dash in this file. */
+guideCheck("guide copy has no em dash", guideSrc.indexOf("\u2014") < 0);
+
+/* Panel open/close logic against a minimal DOM stub. This checks the
+ * logic, not a browser render; the visual check happens on the branch
+ * preview. */
+var stubPanel = {
+  hidden: true,
+  addEventListener: function () {},
+  querySelectorAll: function () { return []; }
+};
+var stubClose = { focused: false, focus: function () { this.focused = true; } };
+var stubBtn = { focused: false, focus: function () { this.focused = true; } };
+global.document = {
+  activeElement: null,
+  getElementById: function (id) {
+    if (id === "guide-panel") { return stubPanel; }
+    if (id === "guide-close") { return stubClose; }
+    if (id === "btn-guide") { return stubBtn; }
+    return null;
+  }
+};
+var opened = guide.open();
+guideCheck("panel opens (hidden false, focus moves to Close)",
+  opened === true && stubPanel.hidden === false && stubClose.focused === true);
+var closed = guide.close();
+guideCheck("panel closes and focus returns to Guide",
+  closed === true && stubPanel.hidden === true && stubBtn.focused === true);
+delete global.document;
+
+allPass = allPass && guideOk;
 
 console.log(allPass ? "\nAll acceptance checks passed." : "\nACCEPTANCE FAILED.");
 process.exit(allPass ? 0 : 1);
