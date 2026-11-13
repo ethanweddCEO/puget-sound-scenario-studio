@@ -1,0 +1,51 @@
+{
+ "study_areas": [
+  {
+   "id": "belred",
+   "name": "Bel Red",
+   "jurisdiction": "Bellevue",
+   "status": "verified",
+   "parcels": 463,
+   "candidate_parcels": 363,
+   "candidate_acres": 507.7,
+   "standards_snapshot_date": "2026-11-09",
+   "files": {
+    "parcels": "belred/parcels.geojson",
+    "zoning": "belred/zoning.geojson",
+    "standards": "belred/standards.json"
+   }
+  }
+ ],
+ "jurisdictions": [
+  {
+   "name": "Bellevue",
+   "readiness": "verified",
+   "note": "Bel Red districts extracted and verified per the v2 addendum, 2026-11-09."
+  },
+  {
+   "name": "Seattle",
+   "readiness": "partial",
+   "note": "Zoning attributes rebuilt from Ordinance 127376 with about 94 percent height and FAR coverage; gaps remain and no per-acre density cap exists in current code. Standards extraction not yet done."
+  },
+  {
+   "name": "King County",
+   "readiness": "not yet extracted",
+   "note": "Zoning harmonized in the hub; dimensional standards not yet extracted."
+  },
+  {
+   "name": "Snohomish County",
+   "readiness": "not yet extracted",
+   "note": "Zoning harmonized in the hub; dimensional standards not yet extracted."
+  },
+  {
+   "name": "Pierce County",
+   "readiness": "not yet extracted",
+   "note": "Zoning harmonized in the hub; dimensional standards not yet extracted."
+  },
+  {
+   "name": "Kitsap County",
+   "readiness": "not yet extracted",
+   "note": "Zoning harmonized in the hub; 0 of 791 polygons fully matched to the crosswalk."
+  }
+ ]
+}
