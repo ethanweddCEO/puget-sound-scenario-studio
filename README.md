@@ -186,13 +186,16 @@ participation, the district drawer check); and the standing caveats
 (gross not net, FAR exemptions displayed not modeled, LUCA draft not
 adopted, code snapshot 2026-11-09).
 
-The panel is a dialog: Escape closes it, focus moves into it on open
-and back to the Guide button on close, and Tab cycles inside it while
-it is open. On a phone it becomes a full-screen overlay, like the
-settings panel. The acceptance test checks the guide content: every id
-it queries exists in `index.html`, all six sections are present, the
-required glossary terms appear, the worked-example figures match the
-verified model runs, and the copy carries no em dash.
+The panel is a dialog with a backdrop: the backdrop blocks clicks to
+the page behind it, and clicking it closes the guide. Escape closes it
+from anywhere on the page, focus moves into it on open and back to the
+Guide button on close, and Tab cycles inside it while it is open. The
+header (title, Close, section nav) stays pinned while the body scrolls.
+On a phone it becomes a full-screen overlay, like the settings panel.
+The acceptance test checks the guide content: every id it queries
+exists in `index.html`, all six sections are present, the required
+glossary terms appear, the worked-example figures match the verified
+model runs, and the copy carries no em dash.
 
 ## Settings: why each one exists
 

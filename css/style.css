@@ -212,6 +212,30 @@ button.active { background: #16324a; color: #fff; border-color: #16324a; }
   padding: 12px 18px 24px;
 }
 .guide-panel h2 { font-size: 16px; margin: 4px 0 10px; }
+
+/* Sticky header: the title, Close button, and section nav stay visible
+ * while the guide body scrolls, so Close is always one click away. The
+ * negative margins span the panel's own padding, so the white
+ * background covers text scrolling underneath. */
+.guide-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  margin: -12px -18px 0;
+  padding: 12px 18px 0;
+}
+
+/* Backdrop: blocks clicks to the page behind the open panel (the map
+ * used to stay clickable and would open a parcel drawer underneath the
+ * guide). Clicking the backdrop closes the guide. It sits below the
+ * panel (z-index 20) and above the page. */
+.guide-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 50, 74, 0.35);
+  z-index: 19;
+}
 .guide-panel h3 { font-size: 15px; margin: 22px 0 6px; }
 .guide-panel h4 { font-size: 13px; margin: 14px 0 4px; color: #4a5a68; }
 .guide-panel p, .guide-panel li { font-size: 13px; line-height: 1.55; }
@@ -333,6 +357,9 @@ button.active { background: #16324a; color: #fff; border-color: #16324a; }
     border-left: none;
     z-index: 30;
   }
+
+  /* Backdrop stays below the full-screen guide panel on mobile. */
+  .guide-backdrop { z-index: 29; }
 
   /* Fixed section nav at the bottom of the screen. */
   .mobile-nav {

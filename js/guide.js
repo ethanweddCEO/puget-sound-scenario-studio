@@ -5,10 +5,15 @@
  * button, the panel, the section content, keyboard behavior, and focus.
  * It wires itself on DOMContentLoaded and touches nothing else.
  *
- * Accessibility: the panel is a dialog with a label. Opening it moves
- * focus to the Close button; closing it returns focus to the Guide
- * button. Escape closes it. Tab cycles inside the panel while it is
- * open. Section headings are focus targets for the in-panel nav.
+ * Accessibility: the panel is a dialog with a label, and a backdrop
+ * blocks the page behind it while it is open. Opening it moves focus
+ * to the Close button; closing it returns focus to the Guide button.
+ * Escape closes it from anywhere on the page: the key handler lives on
+ * the document while the panel is open, not on the panel, so it works
+ * even after focus leaves the panel. Tab cycles inside the panel while
+ * it is open. Section headings are focus targets for the in-panel nav.
+ * The header (title, Close, nav) is sticky via CSS, so Close stays
+ * visible while the body scrolls.
  *
  * Copy rule: no em dashes anywhere in this file. The acceptance test
  * checks for them. The numbers in the worked examples are the verified
@@ -30,7 +35,7 @@
 
   /* Every id this module queries. The acceptance test checks each one
    * exists in index.html, so a rename in either file fails loudly. */
-  var IDS_USED = ["btn-guide", "guide-panel", "guide-close", "guide-nav", "guide-body", "guide-title"];
+  var IDS_USED = ["btn-guide", "guide-panel", "guide-close", "guide-nav", "guide-body", "guide-title", "guide-backdrop"];
 
   var SECTIONS = [
     {
@@ -237,6 +242,11 @@
     }
     lastFocused = document.activeElement;
     panel.hidden = false;
+    var backdrop = document.getElementById("guide-backdrop");
+    if (backdrop) { backdrop.hidden = false; }
+    if (document.addEventListener) {
+      document.addEventListener("keydown", onDocumentKeyDown);
+    }
     var closeBtn = document.getElementById("guide-close");
     if (closeBtn && closeBtn.focus) { closeBtn.focus(); }
     return true;
@@ -250,26 +260,41 @@
       return false;
     }
     panel.hidden = true;
+    var backdrop = document.getElementById("guide-backdrop");
+    if (backdrop) { backdrop.hidden = true; }
+    if (document.removeEventListener) {
+      document.removeEventListener("keydown", onDocumentKeyDown);
+    }
     if (btn.focus) { btn.focus(); }
     return true;
   }
 
-  /* Escape closes. Tab cycles inside the panel while it is open, so
-   * keyboard users cannot tab out into the page behind it. */
-  function onPanelKeyDown(e) {
+  /* Escape closes, and Tab cycles inside the panel while it is open.
+   * This handler lives on the document, registered on open and removed
+   * on close. A panel-level handler was tried first and failed: once
+   * focus left the panel (for example by clicking the map), Escape
+   * stopped working because key events never reached the panel. */
+  function onDocumentKeyDown(e) {
+    var panel = document.getElementById("guide-panel");
+    if (!panel || panel.hidden) { return; }
     if (e.key === "Escape") {
       e.preventDefault();
       closeGuide();
       return;
     }
     if (e.key !== "Tab") { return; }
-    var panel = document.getElementById("guide-panel");
-    if (!panel) { return; }
     var focusable = panel.querySelectorAll(
       "button, a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
     if (!focusable.length) { return; }
     var first = focusable[0];
     var last = focusable[focusable.length - 1];
+    /* Focus escaped the panel (the backdrop blocks clicks, but a
+     * keyboard user can still shift focus out). Pull it back in. */
+    if (panel.contains && !panel.contains(document.activeElement)) {
+      e.preventDefault();
+      first.focus();
+      return;
+    }
     if (e.shiftKey && document.activeElement === first) {
       e.preventDefault();
       last.focus();
@@ -314,6 +339,7 @@
     var btn = document.getElementById("btn-guide");
     var closeBtn = document.getElementById("guide-close");
     var panel = document.getElementById("guide-panel");
+    var backdrop = document.getElementById("guide-backdrop");
     if (!nav || !body || !btn || !closeBtn || !panel) {
       console.error("[scenario-studio] guide panel is missing markup, the Guide button will not work.");
       return;
@@ -321,7 +347,7 @@
     renderGuide(nav, body);
     btn.addEventListener("click", openGuide);
     closeBtn.addEventListener("click", closeGuide);
-    panel.addEventListener("keydown", onPanelKeyDown);
+    if (backdrop) { backdrop.addEventListener("click", closeGuide); }
   }
 
   /* The module only touches the DOM in a browser. In Node (acceptance

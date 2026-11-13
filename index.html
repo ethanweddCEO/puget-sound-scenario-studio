@@ -236,11 +236,15 @@
 
 <!-- How-to guide: a Guide button in the topbar opens this panel. The
      section content is built by js/guide.js, which also owns the open,
-     close, Escape, and focus behavior. -->
+     close, backdrop, Escape, and focus behavior. The backdrop blocks
+     clicks to the page behind the panel; clicking it closes the guide. -->
+<div class="guide-backdrop" id="guide-backdrop" hidden></div>
 <aside class="guide-panel" id="guide-panel" hidden role="dialog" aria-modal="true" aria-labelledby="guide-title">
+  <div class="guide-header">
   <h2 id="guide-title" tabindex="-1">How to use the Scenario Studio</h2>
   <button class="drawer-close" id="guide-close" type="button" aria-label="Close guide">Close</button>
   <nav class="guide-nav" id="guide-nav" aria-label="Guide sections"></nav>
+  </div>
   <div id="guide-body"></div>
 </aside>
 

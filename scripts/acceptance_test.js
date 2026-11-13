@@ -91,7 +91,7 @@ guideCheck("Guide button exists in index.html", !!htmlIds["btn-guide"]);
 guideCheck("Guide panel exists in index.html", !!htmlIds["guide-panel"]);
 var missingIds = guide.IDS_USED.filter(function (id) { return !htmlIds[id]; });
 guideCheck("every id guide.js queries exists in index.html", missingIds.length === 0,
-  missingIds.length ? "missing: " + missingIds.join(", ") : "6 ids");
+  missingIds.length ? "missing: " + missingIds.join(", ") : "7 ids");
 
 var emptySections = guide.SECTIONS.filter(function (s) { return !s.title || !s.html; });
 guideCheck("every guide section has a title and body (" + guide.SECTIONS.length + " sections)",
