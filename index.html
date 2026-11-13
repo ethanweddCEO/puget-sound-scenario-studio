@@ -25,7 +25,7 @@
 <main class="layout">
   <!-- Left: scenario controls. Every control here changes the model, the
        map, or the results. See README for a one-line reason per control. -->
-  <section class="panel panel-left" aria-label="Scenario controls">
+  <section class="panel panel-left" id="panel-controls" aria-label="Scenario controls">
     <h2>Scenario</h2>
 
     <div class="preset-row" role="group" aria-label="Presets">
@@ -99,7 +99,7 @@
   </section>
 
   <!-- Right: results -->
-  <section class="panel panel-right" aria-label="Results">
+  <section class="panel panel-right" id="panel-results" aria-label="Results">
     <h2>Results</h2>
     <p class="gross-note">Capacity is <strong>gross</strong>, not net of existing homes or jobs.</p>
 
@@ -130,6 +130,7 @@
     </div>
 
     <h3>Districts</h3>
+    <div class="table-scroll">
     <table class="district-table" id="district-table">
       <thead><tr>
         <th data-sort="name">District</th>
@@ -141,6 +142,7 @@
       </tr></thead>
       <tbody></tbody>
     </table>
+    </div>
     <p class="hint">Click a district row for its standards, citations, exemptions, and verification status. Click a column header to sort.</p>
 
     <h3>Constraints in this scenario</h3>
@@ -155,10 +157,20 @@
       <p>Code snapshot: <strong>2026-11-09</strong> (Bellevue Land Use Code, LUC 20.25D.080 / 20.25D.090).</p>
       <p>BelRed Look Forward LUCA: <strong>draft, not adopted</strong>. If adopted, the standards must be re-extracted and this scenario re-run.</p>
       <p>Standards: <span id="prov-standards">Bel Red, verified per the v2 addendum</span>.</p>
-      <p><a href="https://github.com/ethanweddCEO/puget-sound-scenario-studio" target="_blank" rel="noopener">Repository</a> (private)</p>
+      <p><a href="https://github.com/ethanweddCEO/puget-sound-scenario-studio" target="_blank" rel="noopener">Repository</a> (public)</p>
     </footer>
   </section>
 </main>
+
+<!-- Mobile section nav: shown only below 760px (see css/style.css). Plain
+     anchor links, so it works with touch, mouse, and keyboard, and needs
+     no JavaScript. It jumps to the map, the results, or the scenario
+     controls without scrolling past the other two. -->
+<nav class="mobile-nav" aria-label="Sections">
+  <a href="#map">Map</a>
+  <a href="#panel-results">Results</a>
+  <a href="#panel-controls">Scenario</a>
+</nav>
 
 <!-- Settings panel: every setting changes real behavior. See README. -->
 <aside class="settings" id="settings-panel" hidden aria-label="Settings">

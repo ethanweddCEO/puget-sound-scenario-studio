@@ -197,3 +197,132 @@ button.active { background: #16324a; color: #fff; border-color: #16324a; }
   .layout { grid-template-columns: 280px 1fr; }
   .panel-right { grid-column: 1 / -1; height: auto; }
 }
+
+/* ---------- Responsive layout: tablet and phone ----------
+ * Desktop keeps the three-column grid above. At 760px and below the page
+ * becomes one scrolling column in this order: map, results, scenario
+ * controls. The map is first because it is the orienting view; the
+ * results follow because the headline numbers are what most visits are
+ * for; the controls come last, reached in one tap from the fixed section
+ * nav at the bottom. The nav is plain anchor links, so it needs no
+ * JavaScript and works with keyboard focus. The panels stop scrolling
+ * internally on mobile: the page itself scrolls, which is what a phone
+ * reader expects. Nothing here changes desktop behavior. */
+
+/* Hidden on desktop; shown only below 760px. */
+.mobile-nav { display: none; }
+
+@media (max-width: 760px) {
+  html, body { overflow-x: hidden; }
+  body { padding-bottom: 56px; } /* room for the fixed section nav */
+
+  /* Topbar: title and actions wrap onto two lines instead of clipping. */
+  .topbar { flex-wrap: wrap; padding: 8px 12px; }
+  .topbar h1 { font-size: 16px; }
+  .study-area { font-size: 12px; }
+  .topbar-actions { flex-wrap: wrap; }
+  .topbar-actions button { min-height: 44px; padding: 10px 12px; }
+
+  /* Single column, in map / results / controls order. */
+  .layout { display: flex; flex-direction: column; height: auto; }
+  .map-wrap { order: 1; height: clamp(300px, 55vh, 420px); flex: none; }
+  .panel-right { order: 2; border-left: none; border-top: 1px solid #d5dde3; }
+  .panel-left { order: 3; border-right: none; border-top: 1px solid #d5dde3; }
+  .panel { overflow-y: visible; padding: 12px 14px; }
+  .panel, .map-wrap { scroll-margin-bottom: 64px; } /* clear the fixed nav */
+
+  /* Map toolbar wraps instead of overflowing the map. */
+  .map-toolbar {
+    flex-wrap: wrap;
+    max-width: calc(100% - 20px);
+    padding: 6px 8px;
+    gap: 6px 10px;
+  }
+  .map-toolbar select { min-height: 44px; }
+
+  /* Touch targets: every tappable control is at least 44px tall. */
+  button { min-height: 44px; padding: 10px 12px; }
+  select { min-height: 44px; }
+  .preset-row { gap: 8px; }
+  .preset { flex: 1 1 45%; } /* two preset buttons per row */
+  .district-checks input[type="checkbox"] { width: 22px; height: 22px; flex: none; }
+  .district-checks li { padding: 6px 0; }
+  .advanced summary, .gaps summary { padding: 8px 0; }
+
+  /* Sliders: a taller track and a thumb big enough to grab. Scoped to
+   * this breakpoint so the desktop sliders look exactly as before. */
+  input[type="range"] { height: 32px; margin-top: 6px; }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px; background: #c9d4dc; border-radius: 3px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 28px; height: 28px; margin-top: -11px;
+    border-radius: 50%; background: #16324a; border: none;
+  }
+  input[type="range"]::-moz-range-track {
+    height: 6px; background: #c9d4dc; border-radius: 3px;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #16324a; border: none;
+  }
+
+  /* District table: scrolls sideways inside its own box; the page never
+   * gains a horizontal scrollbar from it. */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .district-table { min-width: 480px; }
+
+  /* Detail drawer becomes a bottom sheet: fixed to the viewport bottom,
+   * at most 72% of the screen tall, above the section nav. */
+  .drawer {
+    position: fixed;
+    top: auto; left: 0; right: 0; bottom: 0;
+    width: auto; max-width: none;
+    max-height: 72vh;
+    z-index: 25;
+    border-radius: 12px 12px 0 0;
+    border-bottom: none;
+  }
+
+  /* Settings become a full-screen overlay. */
+  .settings {
+    width: 100%; max-width: none;
+    border-left: none;
+    z-index: 30;
+  }
+
+  /* Fixed section nav at the bottom of the screen. */
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 15;
+    background: #16324a;
+    border-top: 1px solid #0e2233;
+  }
+  .mobile-nav a {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 8px 4px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+  }
+  .mobile-nav a:focus-visible { outline-color: #fff; }
+  .mobile-nav a + a { border-left: 1px solid rgba(255, 255, 255, 0.25); }
+}
+
+/* Below 480px the topbar title drops to one line and the study-area label
+ * moves under it, so the action buttons still fit on their own row. */
+@media (max-width: 480px) {
+  .topbar-title { flex: 1 1 100%; }
+  .study-area { display: block; }
+  .topbar-actions { width: 100%; }
+  .topbar-actions button { flex: 1 1 auto; }
+}
